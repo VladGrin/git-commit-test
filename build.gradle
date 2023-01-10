@@ -2,7 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.4.5'
     id 'io.spring.dependency-management' version '1.1.0'
     id 'java'
-    id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.77.2'
+    id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.54'
 }
 
 version = '1.0.2'
@@ -14,9 +14,6 @@ java {
 
 repositories {
     mavenCentral()
-//    dependencies {
-//        classpath "se.bjurr.gitchangelog:git-changelog-gradle-plugin:1.77.2"
-//    }
 }
 
 dependencies {
@@ -67,7 +64,7 @@ task gitChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask
 }
 
 // Optional config if you want to configure versioning
-task gitChangelogVersionTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogSemanticVersionTask) {
+tasks.register('gitChangelogVersionTask') {
     suffixSnapshot = true;
     majorVersionPattern = "^[Bb]reaking"
     minorVersionPattern = "[Ff]eature"
