@@ -14,6 +14,9 @@ java {
 
 repositories {
     mavenCentral()
+//    dependencies {
+//        classpath "se.bjurr.gitchangelog:git-changelog-gradle-plugin:1.77.2"
+//    }
 }
 
 dependencies {
@@ -27,10 +30,12 @@ tasks.named('test', Test) {
     useJUnitPlatform()
 }
 
+apply plugin: 'se.bjurr.gitchangelog.git-changelog-gradle-plugin'
+
 // Optional config if you want to configure the changelog
-tasks.register('gitChangelogTask') {
+task gitChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
     templateContent = """
-      # Changelog
+    # Changelog
     
     {{#tags}}
     {{#ifReleaseTag .}}
@@ -62,7 +67,7 @@ tasks.register('gitChangelogTask') {
 }
 
 // Optional config if you want to configure versioning
-tasks.register('gitChangelogVersionTask') {
+task gitChangelogVersionTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogSemanticVersionTask) {
     suffixSnapshot = true;
     majorVersionPattern = "^[Bb]reaking"
     minorVersionPattern = "[Ff]eature"
