@@ -28,7 +28,7 @@ tasks.named('test', Test) {
 }
 
 // Optional config if you want to configure the changelog
-task gitChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
+tasks.register('gitChangelogTask') {
     templateContent = """
       # Changelog
     
@@ -62,7 +62,7 @@ task gitChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask
 }
 
 // Optional config if you want to configure versioning
-task gitChangelogVersionTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogSemanticVersionTask) {
+tasks.register('gitChangelogVersionTask') {
     suffixSnapshot = true;
     majorVersionPattern = "^[Bb]reaking"
     minorVersionPattern = "[Ff]eature"
