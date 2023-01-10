@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.4.5'
     id 'io.spring.dependency-management' version '1.1.0'
     id 'java'
+    id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.77.2'
 }
 
 version = '1.0.2'
@@ -24,4 +25,46 @@ dependencies {
 
 tasks.named('test', Test) {
     useJUnitPlatform()
+}
+
+// Optional config if you want to configure the changelog
+task gitChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
+    templateContent = """
+      # Changelog
+    
+    {{#tags}}
+    {{#ifReleaseTag .}}
+    ## [{{name}}](https://gitlab.com/html-validate/html-validate/compare/{{name}}) ({{tagDate .}})
+    
+      {{#ifContainsType commits type='feat'}}
+    ### Features
+    
+        {{#commits}}
+          {{#ifCommitType . type='feat'}}
+     - {{#eachCommitScope .}} **{{.}}** {{/eachCommitScope}} {{{commitDescription .}}} ([{{hash}}](https://gitlab.com/html-validate/html-validate/commit/{{hashFull}}))
+          {{/ifCommitType}}
+        {{/commits}}
+      {{/ifContainsType}}
+    
+      {{#ifContainsType commits type='fix'}}
+    ### Bug Fixes
+    
+        {{#commits}}
+          {{#ifCommitType . type='fix'}}
+     - {{#eachCommitScope .}} **{{.}}** {{/eachCommitScope}} {{{commitDescription .}}} ([{{hash}}](https://gitlab.com/html-validate/html-validate/commit/{{hashFull}}))
+          {{/ifCommitType}}
+        {{/commits}}
+      {{/ifContainsType}}
+    
+    {{/ifReleaseTag}}
+    {{/tags}}
+ """;
+}
+
+// Optional config if you want to configure versioning
+task gitChangelogVersionTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogSemanticVersionTask) {
+    suffixSnapshot = true;
+    majorVersionPattern = "^[Bb]reaking"
+    minorVersionPattern = "[Ff]eature"
+    patchVersionPattern = "[Ff]ix"
 }
